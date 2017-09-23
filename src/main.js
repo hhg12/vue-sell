@@ -3,9 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
-import goods from './components/goods/goods'
-import sellers from './components/sellers/sellers'
-import ratings from './components/ratings/ratings'
+import goods from 'components/goods/goods'
+import sellers from 'components/sellers/sellers'
+import ratings from 'components/ratings/ratings'
 
 Vue.config.productionTip = false
 
@@ -24,13 +24,16 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes // （缩写）相当于 routes: routes
+  routes, // （缩写）相当于 routes: routes
+  linkActiveClass: 'active'
 })
-
+// router.go('/goods');
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
   components: { App }
 })
+router.push('/goods')
+
 
