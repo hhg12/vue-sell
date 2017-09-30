@@ -3,10 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import VueRouter from 'vue-router'
+import VueResource from 'vue-resource'
 import goods from 'components/goods/goods'
 import sellers from 'components/sellers/sellers'
 import ratings from 'components/ratings/ratings'
 
+import './common/sass/index.scss'
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
@@ -17,6 +19,7 @@ Vue.config.productionTip = false
 //   components: { App }
 // })
 Vue.use(VueRouter)
+Vue.use(VueResource)
 const routes = [
   { path: '/goods', component: goods },
   { path: '/sellers', component: sellers },
