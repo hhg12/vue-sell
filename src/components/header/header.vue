@@ -20,12 +20,16 @@
       </div>
       <div class="support-count">
         <span v-if="seller.supports" class="count">{{seller.supports.length}}个</span>
-        <i class="icon sell-icon icon-keyboard_arrow_right "></i>
+        <i class="iconfont icon-enter "></i>
       </div>
 
     </div>
     <div class="bulletin-wrapper">
-
+      <span class="bulletin-brand"></span><span class="bulletin-title">{{seller.bulletin}}</span>
+      <i class="iconfont icon-enter "></i>
+    </div>
+    <div class="background">
+      <img :src="seller.avatar" height="100%" width="100%">
     </div>
   </div>
 
@@ -47,8 +51,10 @@
 
 
   .header {
+    position: relative;
     color: #fff;
-    background: #ccc;
+    background: rgba(7,17,27,0.5);
+    overflow: hidden;
     .content-wrapper {
       position: relative;
       padding: 24px 12px 18px 24px;
@@ -129,13 +135,52 @@
         text-align: center;
         .count {
           font-size: 10px;
+          /*vertical-align: top;*/
         }
-        .icon-keyboard_arrow_right {
+        .icon-enter {
           font-size: 10px;
           margin-left: 2px;
-          vertical-align: top;
         }
       }
+    }
+    .bulletin-wrapper {
+      position: relative;
+      /*height: 28px;*/
+      padding: 0 22px 0 12px;
+      background: rgba(7,17,27,0.2);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      .bulletin-brand {
+        display: inline-block;
+        width: 22px;
+        height: 12px;
+        margin-top: 9px;
+        vertical-align: top;
+        @include bg-img('bulletin');
+        background-size: 22px 12px;
+        background-repeat: no-repeat;
+      }
+      .bulletin-title {
+        font-size: 10px;
+        line-height: 28px;
+        margin: 0 4px;
+      }
+      .icon-enter {
+        position: absolute;
+        font-size: 10px;
+        top: 9px;
+        right: 12px;
+      }
+    }
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      /*height: 100%;*/
+      z-index: -1;
+      filter: blur(10px);
     }
   }
 
