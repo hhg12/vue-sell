@@ -31,7 +31,7 @@
     <div class="background">
       <img :src="seller.avatar" height="100%" width="100%">
     </div>
-    <div class="detail" v-show="isDetailShow">
+    <div class="detail" v-show="isDetailShow" transition="fade">
       <div class="detail-wrapper">
         <div class="detail-main">
           <h1 class="name">{{seller.name}}</h1>
@@ -49,9 +49,17 @@
               <span class="text">{{item.description}}</span>
             </li>
           </ul>
+          <div class="bulletin">
+            <div class="line"></div>
+            <div class="text">商家公告</div>
+            <div class="line"></div>
+          </div>
+          <div class="bulletin-main">
+            <p>{{seller.bulletin}}</p>
+          </div>
         </div>
       </div>
-      <div class="detail-close">
+      <div class="detail-close" @click="hideDetail">
         <i class="iconfont icon-close"></i>
       </div>
     </div>
@@ -77,6 +85,9 @@
     methods: {
       showDetail: function () {
         this.isDetailShow = true
+      },
+      hideDetail: function () {
+        this.isDetailShow = false
       }
     },
     components: {
@@ -226,9 +237,18 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(7, 17, 27, 0.8);
       z-index: 100;
       overflow: auto;
+      background: rgba(7, 17, 27, 0.8);
+      /*transition: all 0.5s;*/
+      /*&.fade-transition {*/
+        /*opacity: 1;*/
+        /*background: rgba(7, 17, 27, 0.8);*/
+      /*}*/
+      /*&.fade-entry, &.fade-leave {*/
+        /*opacity: 0;*/
+        /*background: rgba(7, 17, 27, 0);*/
+      /*}*/
       .detail-wrapper {
         min-height: 100%;
         .detail-main {
@@ -250,13 +270,72 @@
             align-items: center;
             .line {
               flex: 1;
-              border-bottom: 1px solid rgba(255,255,255,0.2);
+              border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             }
             .text {
               padding: 0 12px;
               font-weight: 700;
               font-size: 14px;
             }
+          }
+          .supports {
+            width: 80%;
+            margin: 0 auto;
+            .support {
+              display: flex;
+              align-items: center;
+              margin-bottom: 12px;
+              .brand {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                margin-right: 6px;
+                background-size: 16px 16px;
+                background-repeat: no-repeat;
+                &.decrease {
+                  @include bg-img('decrease_2')
+                }
+                &.discount {
+                  @include bg-img('discount_2')
+                }
+                &.guarantee {
+                  @include bg-img('guarantee_2')
+                }
+                &.invoice {
+                  @include bg-img('invoice_2')
+                }
+                &.special {
+                  @include bg-img('special_2')
+                }
+              }
+              .text {
+                font-size: 12px;
+                line-height: 12px;
+              }
+            }
+          }
+          .bulletin {
+            display: flex;
+            width: 80%;
+            margin: 28px auto 24px;
+            align-items: center;
+            .line {
+              flex: 1;
+              border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            .text {
+              padding: 0 12px;
+              font-weight: 700;
+              font-size: 14px;
+            }
+          }
+          .bulletin-main {
+            width: 80%;
+            margin: 0 auto;
+            font-size: 12px;
+            line-height: 24px;
+            font-weight: 200;
+            text-align: justify;
           }
 
         }
