@@ -18,18 +18,42 @@
         </div>
 
       </div>
-      <div class="support-count">
+      <div class="support-count" @click="showDetail">
         <span v-if="seller.supports" class="count">{{seller.supports.length}}个</span>
         <i class="iconfont icon-enter "></i>
       </div>
 
     </div>
-    <div class="bulletin-wrapper">
+    <div class="bulletin-wrapper" @click="showDetail">
       <span class="bulletin-brand"></span><span class="bulletin-title">{{seller.bulletin}}</span>
       <i class="iconfont icon-enter "></i>
     </div>
     <div class="background">
       <img :src="seller.avatar" height="100%" width="100%">
+    </div>
+    <div class="detail" v-show="isDetailShow">
+      <div class="detail-wrapper">
+        <div class="detail-main">
+          <h1 class="name">{{seller.name}}</h1>
+          <div class="star-wrapper">
+            <star :size="48" :score="seller.score"></star>
+          </div>
+          <div class="title">
+            <div class="line"></div>
+            <div class="text">优惠信息</div>
+            <div class="line"></div>
+          </div>
+          <ul v-if="seller.supports" class="supports">
+            <li class="support" v-for="item in seller.supports">
+              <span class="brand" :class="classMap[item.type]"></span>
+              <span class="text">{{item.description}}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="detail-close">
+        <i class="iconfont icon-close"></i>
+      </div>
     </div>
   </div>
 
@@ -37,11 +61,26 @@
 </template>
 
 <script>
+  import star from 'components/star/star'
+
   export default {
     name: 'header',
     props: ['seller'],
+    data () {
+      return {
+        isDetailShow: false
+      }
+    },
     created: function () {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+    },
+    methods: {
+      showDetail: function () {
+        this.isDetailShow = true
+      }
+    },
+    components: {
+      star
     }
   }
 </script>
@@ -49,11 +88,10 @@
 <style lang="scss">
   @import "../../common/sass/mixin.scss";
 
-
   .header {
     position: relative;
     color: #fff;
-    background: rgba(7,17,27,0.5);
+    background: rgba(7, 17, 27, 0.5);
     overflow: hidden;
     .content-wrapper {
       position: relative;
@@ -131,7 +169,7 @@
         border-radius: 12px;
         height: 24px;
         line-height: 24px;
-        background: rgba(0,0,0,0.2);
+        background: rgba(0, 0, 0, 0.2);
         text-align: center;
         .count {
           font-size: 10px;
@@ -145,9 +183,9 @@
     }
     .bulletin-wrapper {
       position: relative;
-      /*height: 28px;*/
+      height: 28px;
       padding: 0 22px 0 12px;
-      background: rgba(7,17,27,0.2);
+      background: rgba(7, 17, 27, 0.2);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -155,7 +193,7 @@
         display: inline-block;
         width: 22px;
         height: 12px;
-        margin-top: 9px;
+        margin-top: 8px;
         vertical-align: top;
         @include bg-img('bulletin');
         background-size: 22px 12px;
@@ -169,7 +207,7 @@
       .icon-enter {
         position: absolute;
         font-size: 10px;
-        top: 9px;
+        top: 8px;
         right: 12px;
       }
     }
@@ -178,9 +216,59 @@
       top: 0;
       left: 0;
       width: 100%;
-      /*height: 100%;*/
+      height: 100%;
       z-index: -1;
       filter: blur(10px);
+    }
+    .detail {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(7, 17, 27, 0.8);
+      z-index: 100;
+      overflow: auto;
+      .detail-wrapper {
+        min-height: 100%;
+        .detail-main {
+          padding: 64px 0 80px;
+          text-align: center;
+          .name {
+            font-size: 16px;
+            line-height: 16px;
+            font-weight: 700;
+          }
+          .star-wrapper {
+            margin-top: 18px;
+            padding: 2px 0;
+          }
+          .title {
+            display: flex;
+            width: 80%;
+            margin: 28px auto 24px;
+            align-items: center;
+            .line {
+              flex: 1;
+              border-bottom: 1px solid rgba(255,255,255,0.2);
+            }
+            .text {
+              padding: 0 12px;
+              font-weight: 700;
+              font-size: 14px;
+            }
+          }
+
+        }
+      }
+      .detail-close {
+        height: 32px;
+        width: 32px;
+        margin: -64px auto 0 auto;
+        .icon-close {
+          font-size: 32px;
+        }
+      }
     }
   }
 
