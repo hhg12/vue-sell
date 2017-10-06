@@ -4,7 +4,7 @@
       <ul>
         <li v-for="(item,index) in goods" class="menu-item"
             :class="{current:currentIndex === index}"
-            @click="selectMenu(index)" >
+            @click="selectMenu(index)">
           <span class="text">
             <span class="icon" v-show="item.type > 0" :class="classMap[item.type]"></span>{{item.name}}
           </span>
@@ -38,16 +38,18 @@
         </li>
       </ul>
     </div>
+    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
 
 </template>
 
 <script>
   import BScroll from 'better-scroll'
+  import shopcart from '../shopcart/shopcart.vue'
 
   const ERR_OK = 0
   export default {
-//    props: [sellers],
+    props: [ 'seller' ],
     data () {
       return {
         goods: [],
@@ -86,7 +88,7 @@
 //        console.log(index)
         let foodList = this.$refs.foodsWrapper.querySelectorAll('.food-list-hook')
         let el = foodList[index]
-        this.foodsScroll.scrollToElement(el,300)
+        this.foodsScroll.scrollToElement(el, 300)
       },
       _initScroll () {
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {
@@ -108,6 +110,9 @@
           this.listHeight.push(height)
         }
       }
+    },
+    components: {
+      shopcart
     }
 
   }
