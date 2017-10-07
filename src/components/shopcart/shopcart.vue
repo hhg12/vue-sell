@@ -12,7 +12,7 @@
         <div class="desc">另需配送费{{deliveryPrice}}元</div>
       </div>
       <div class="content-right">
-        <div v-if="totalPrice < 0" class="pay">￥{{minPrice}}起送</div>
+        <div v-if="totalPrice === 0" class="pay">￥{{minPrice}}起送</div>
         <div v-else-if="totalPrice < minPrice" class="pay">￥还差{{minPrice - totalPrice}}起送</div>
         <div v-else class="pay highlight" >去结算</div>
       </div>
@@ -27,12 +27,7 @@
       selectFoods: {
         type: Array,
         default () {
-          return [
-            {
-              price: 10,
-              count: 1
-            }
-          ]
+          return []
         }
       },
       deliveryPrice: {

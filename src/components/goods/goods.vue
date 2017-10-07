@@ -41,7 +41,8 @@
         </li>
       </ul>
     </div>
-    <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice"
+              :min-price="seller.minPrice"></shopcart>
   </div>
 
 </template>
@@ -53,7 +54,7 @@
 
   const ERR_OK = 0
   export default {
-    props: [ 'seller' ],
+    props: ['seller'],
     data () {
       return {
         goods: [],
@@ -85,6 +86,17 @@
             return i
           }
         }
+      },
+      selectFoods () {
+        let foods = []
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if(food.count){
+              foods.push(food)
+            }
+          })
+        })
+        return foods
       }
     },
     methods: {
@@ -99,7 +111,7 @@
           click: true
         })
         this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
-          probeType: 3
+          probeType: 3, click: true
         })
         this.foodsScroll.on('scroll', (pos) => {
           this.scrollY = Math.abs(Math.round(pos.y))
@@ -116,7 +128,7 @@
       }
     },
     components: {
-      shopcart,cartcontrol
+      shopcart, cartcontrol
     }
 
   }
