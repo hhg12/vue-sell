@@ -32,6 +32,9 @@
                   <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                   <!--<span class="old" >￥28</span>-->
                 </div>
+                <div class="cartcontrol-wrapper">
+                  <cartcontrol :food="food"></cartcontrol>
+                </div>
               </div>
             </li>
           </ul>
@@ -46,6 +49,7 @@
 <script>
   import BScroll from 'better-scroll'
   import shopcart from '../shopcart/shopcart.vue'
+  import cartcontrol from '../cartcontrol/cartcontrol.vue'
 
   const ERR_OK = 0
   export default {
@@ -112,7 +116,7 @@
       }
     },
     components: {
-      shopcart
+      shopcart,cartcontrol
     }
 
   }
@@ -201,6 +205,7 @@
           margin-right: 10px;
         }
         .content {
+          position: relative;
           flex: 1;
           .name {
             font-size: 14px;
@@ -221,22 +226,29 @@
               margin-right: 12px;
             }
           }
-        }
-        .price {
-          font-size: 0;
-          font-weight: 700;
-          line-height: 24px;
-          .now {
-            font-size: 14px;
-            color: red;
-            margin-right: 8px;
+          .price {
+            height: 24px;
+            line-height: 24px;
+            font-size: 0;
+            font-weight: 700;
+            .now {
+              font-size: 14px;
+              color: red;
+              margin-right: 8px;
+            }
+            .old {
+              text-decoration: line-through;
+              font-size: 10px;
+              color: rgb(147, 153, 159);
+            }
           }
-          .old {
-            text-decoration: line-through;
-            font-size: 10px;
-            color: rgb(147, 153, 159);
+          .cartcontrol-wrapper {
+            position: absolute;
+            right: 0;
+            bottom: 0;
           }
         }
+
       }
     }
   }
