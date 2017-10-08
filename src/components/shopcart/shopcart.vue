@@ -1,5 +1,5 @@
 <template>
-  <div class="shopcart">
+  <div class="shopcart" @click="toggleList">
     <div class="content-wrapper">
       <div class="content-left">
         <div class="logo-wrapper">
@@ -19,19 +19,40 @@
     </div>
     <div class="ball-container">
       <!--<transition-group name="drop"-->
-                  <!--v-on:before-enter="beforeEnter"-->
-                  <!--v-on:enter="enter"-->
-                  <!--v-on:after-enter="afterEnter">-->
-        <div v-for="ball in balls" class="ball" v-show="ball.show">
-          <div class="inner inner-hook"></div>
-        </div>
+      <!--v-on:before-enter="beforeEnter"-->
+      <!--v-on:enter="enter"-->
+      <!--v-on:after-enter="afterEnter">-->
+      <div v-for="ball in balls" class="ball" v-show="ball.show">
+        <div class="inner inner-hook"></div>
+      </div>
       <!--</transition-group>-->
     </div>
+    <transition name="fold">
+      <div class="shopcart-list" v-show="listShow">
+        <div class="list-header">
+          <h1 class="title">购物车</h1>
+          <div class="empty">清空</div>
+        </div>
+        <div class="list-content">
+          <ul>
+            <li class="food" v-for="food in selectFoods">
+              <div class="name">{{food.name}}</div>
+              <div class="price">￥{{food.price * food.count}}</div>
+              <div class="cartcontrol-wrapper">
+                <cartcontrol :food="food"></cartcontrol>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </transition>
   </div>
 
 </template>
 
 <script>
+  import cartcontrol from '../cartcontrol/cartcontrol.vue'
+
   export default {
     props: {
       selectFoods: {
@@ -49,6 +70,9 @@
         default: 0
       }
     },
+    components: {
+      cartcontrol
+    },
     data () {
       return {
         balls: [
@@ -58,7 +82,8 @@
           {show: false},
           {show: false}
         ],
-        dropBalls: []
+        dropBalls: [],
+        fold: true
       }
     },
     computed: {
@@ -75,6 +100,13 @@
           count += food.count
         })
         return count
+      },
+      listShow () {
+        if (!this.totalCount) {
+          return
+        }
+        let show = !this.fold
+        return show
       }
     },
     methods: {
@@ -111,10 +143,16 @@
           inner.style.transform = 'translate3d(0,0,0)'
         })
       },
-      afterEnter(el){
+      afterEnter (el) {
         let ball = this.dropBalls.shift()
         ball.show = true
         el.style.display = 'none'
+      },
+      toggleList () {
+        if (!this.totalCount) {
+          return
+        }
+        this.fold = !this.fold
       }
     }
   }
@@ -241,7 +279,37 @@
         }
       }
     }
-
+    .shopcart-list {
+      &.fold-enter-active, &.fold-leave-active {
+        transition: all .3s;
+      }
+      &.fold-enter, &.fold-leave-to {
+        transform: translateY(-48px);
+      }
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: -1;
+      transform: translateY(-100%);
+      .list-header {
+        height: 40px;
+        line-height: 40px;
+        padding: 0 18px;
+        background: #f3f5f7;
+        border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+        .title {
+          float: left;
+          font-size: 14px;
+          color: rgb(7, 17, 27)
+        }
+        .empty {
+          float: right;
+          font-size: 12px;
+          color: rgb(0, 160, 220)
+        }
+      }
+    }
   }
 
 </style>
