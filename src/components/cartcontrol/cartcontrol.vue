@@ -4,7 +4,7 @@
       <div class="cart-decrease icon-removecircleoutline iconfont"
            v-show="food.count > 0"
            @click="decreaseCart"></div>
-  </transition>
+    </transition>
     <div class="cart-count" v-show="food.count > 0">{{food.count}}</div>
     <div class="cart-increase icon-addcircle iconfont" @click="addCart"></div>
   </div>
@@ -29,6 +29,7 @@
         } else {
           this.food.count++
         }
+        this.$emit('add')
       },
       decreaseCart () {
         if (this.food.count) {

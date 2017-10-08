@@ -14,7 +14,12 @@
       <div class="content-right">
         <div v-if="totalPrice === 0" class="pay">￥{{minPrice}}起送</div>
         <div v-else-if="totalPrice < minPrice" class="pay">￥还差{{minPrice - totalPrice}}起送</div>
-        <div v-else class="pay highlight" >去结算</div>
+        <div v-else class="pay highlight">去结算</div>
+      </div>
+    </div>
+    <div class="ball-container">
+      <div v-for="ball in balls" :class="ball" v-show="ball.show">
+        <div class="inner"></div>
       </div>
     </div>
   </div>
@@ -39,6 +44,17 @@
         default: 0
       }
     },
+    data () {
+      return {
+        balls: [
+          {show: false},
+          {show: false},
+          {show: false},
+          {show: false},
+          {show: false}
+        ]
+      }
+    },
     computed: {
       totalPrice () {
         let price = 0
@@ -53,6 +69,11 @@
           count += food.count
         })
         return count
+      }
+    },
+    methods: {
+      drop (el) {
+        console.log(el)
       }
     }
   }

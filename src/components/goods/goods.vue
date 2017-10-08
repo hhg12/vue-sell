@@ -33,7 +33,7 @@
                   <!--<span class="old" >￥28</span>-->
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food"></cartcontrol>
+                  <cartcontrol :food="food" v-on:add="_drop"></cartcontrol>
                 </div>
               </div>
             </li>
@@ -41,8 +41,9 @@
         </li>
       </ul>
     </div>
-    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice"
-              :min-price="seller.minPrice"></shopcart>
+    <shopcart :select-foods="selectFoods"
+              :delivery-price="seller.deliveryPrice"
+              :min-price="seller.minPrice" ref="shopcart"></shopcart>
   </div>
 
 </template>
@@ -55,6 +56,9 @@
   const ERR_OK = 0
   export default {
     props: ['seller'],
+    components: {
+      shopcart, cartcontrol
+    },
     data () {
       return {
         goods: [],
@@ -91,7 +95,7 @@
         let foods = []
         this.goods.forEach((good) => {
           good.foods.forEach((food) => {
-            if(food.count){
+            if (food.count) {
               foods.push(food)
             }
           })
@@ -100,6 +104,9 @@
       }
     },
     methods: {
+      _drop () {
+        this.$refs.shopcart.drop(event.target)
+      },
       selectMenu (index) {
 //        console.log(index)
         let foodList = this.$refs.foodsWrapper.querySelectorAll('.food-list-hook')
@@ -126,9 +133,6 @@
           this.listHeight.push(height)
         }
       }
-    },
-    components: {
-      shopcart, cartcontrol
     }
 
   }
