@@ -18,9 +18,14 @@
       </div>
     </div>
     <div class="ball-container">
-      <div v-for="ball in balls" :class="ball" v-show="ball.show">
-        <div class="inner"></div>
-      </div>
+      <!--<transition-group name="drop"-->
+                  <!--v-on:before-enter="beforeEnter"-->
+                  <!--v-on:enter="enter"-->
+                  <!--v-on:after-enter="afterEnter">-->
+        <div v-for="ball in balls" class="ball" v-show="ball.show">
+          <div class="inner inner-hook"></div>
+        </div>
+      <!--</transition-group>-->
     </div>
   </div>
 
@@ -52,7 +57,8 @@
           {show: false},
           {show: false},
           {show: false}
-        ]
+        ],
+        dropBalls: []
       }
     },
     computed: {
@@ -73,7 +79,42 @@
     },
     methods: {
       drop (el) {
-        console.log(el)
+        for (let i = 0; i < this.balls.length; i++) {
+          let ball = this.balls[i]
+          if (!ball.show) {
+            ball.show = true
+            ball.el = el
+            this.dropBalls.push(ball)
+            return
+          }
+        }
+      },
+      beforeEnter (el) {
+        let count = this.balls.length
+        while (count--) {
+          let ball = this.balls[count]
+          if (ball.show) {
+            let rect = ball.el.getBoundingClientRect()
+            let x = rect.left - 32
+            let y = -(window.innerHeight - rect.top - 22 )
+            el.style.display = ''
+            el.style.transform = `translate3d(0,${y}px,0)`
+            let inner = el.querySelector('.inner-hook')
+            inner.style.transform = `translate3d(${x}px,0,0)`
+          }
+        }
+      },
+      enter (el) {
+        this.$nextTick(() => {
+          el.style.transform = 'translate3d(0,0,0)'
+          let inner = el.querySelector('.inner-hook')
+          inner.style.transform = 'translate3d(0,0,0)'
+        })
+      },
+      afterEnter(el){
+        let ball = this.dropBalls.shift()
+        ball.show = true
+        el.style.display = 'none'
       }
     }
   }
@@ -179,6 +220,24 @@
             color: #fff;
             background: green;
           }
+        }
+      }
+    }
+    .ball-container {
+      /*未完*/
+      .ball {
+        display: none;
+        position: fixed;
+        left: 32px;
+        bottom: 22px;
+        z-index: 200;
+        transition: all 0.5s;
+        .inner {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: rgb(0, 160, 220);
+          transition: all 0.5s;
         }
       }
     }
