@@ -17,7 +17,8 @@
           <h1 class="name">{{item.name}}</h1>
           <ul>
             <li v-for="food in item.foods"
-                class="food-item border-1px" @click="selectFood(food,$event)">
+                class="food-item border-1px"
+                @click="selectFood(food,$event)" >
               <div class="icon">
                 <img :src="food.icon" width="57" height="57">
               </div>
@@ -45,7 +46,7 @@
     <shopcart :select-foods="selectFoods"
               :delivery-price="seller.deliveryPrice"
               :min-price="seller.minPrice" ref="shopcart"></shopcart>
-    <food :food="selectedFood"></food>
+    <food :food="selectedFood" ref="foodVue"></food>
   </div>
 
 </template>
@@ -110,6 +111,7 @@
     methods: {
       selectFood (food, event) {
         this.selectedFood = food
+        this.$refs.foodVue.show()
       },
       _drop () {
         this.$refs.shopcart.drop(event.target)
