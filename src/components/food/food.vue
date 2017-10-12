@@ -1,14 +1,14 @@
 <template>
   <transition name="fade">
-    <div class="food" v-show="showFlag">
-      <div class="content">
+    <div class="food" v-show="showFlag" ref="food">
+      <div class="food-content">
         <div class="img-header">
           <img :src="food.image">
           <div class="back" @click="hide">
             <i class="icon-arrow_lift iconfont"></i>
           </div>
         </div>
-        <div class="content-detial">
+        <div class="content-detail">
           <h1 class="title">{{food.name}}</h1>
           <div class="detail">
             <span class="sellCount">月售{{food.sellCount}}份</span><span
@@ -19,6 +19,12 @@
             <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
           </div>
         </div>
+        <div class="cartcontrol-wrapper">
+          <cartcontrol :food="food"></cartcontrol>
+        </div>
+        <transition name="buy-hide">
+          <div class="buy" @click="addFirst" v-show="!food.count">加入购物车</div>
+        </transition>
       </div>
     </div>
   </transition>
@@ -27,11 +33,17 @@
 </template>
 
 <script>
+  import BScroll from 'better-scroll'
+  import cartcontrol from '../cartcontrol/cartcontrol.vue'
+
   export default {
     props: {
       food: {
         type: Object
       }
+    },
+    components: {
+      cartcontrol
     },
     data () {
       return {
@@ -39,8 +51,18 @@
       }
     },
     methods: {
+      addFirst () {
+        this.$set(this.food, 'count', 1)
+      },
       show () {
         this.showFlag = true
+        this.$nextTick(() => {
+          if (!this.foodScroll) {
+            this.foodScroll = new BScroll(this.$refs.food, {})
+          } else {
+            this.foodScroll.refresh()
+          }
+        })
       },
       hide () {
         this.showFlag = false
@@ -67,7 +89,7 @@
     z-index: 30;
     width: 100%;
     background: #fff;
-    .content {
+    .food-content {
       .img-header {
         position: relative;
         width: 100%;
@@ -91,6 +113,67 @@
             color: #fff;
           }
         }
+      }
+      .content-detail {
+        padding: 18px;
+        .title {
+          font-size: 14px;
+          font-weight: 700;
+          color: rgb(7, 17, 27);
+          line-height: 14px;
+          margin-bottom: 8px;
+        }
+        .detail {
+          font-size: 10px;
+          color: rgb(147, 153, 159);
+          line-height: 10px;
+          margin-bottom: 18px;
+          .sellCount {
+            margin-right: 12px;
+          }
+        }
+        .price {
+          height: 24px;
+          line-height: 24px;
+          font-size: 0;
+          font-weight: 700;
+          .now {
+            font-size: 14px;
+            color: red;
+            margin-right: 8px;
+          }
+          .old {
+            text-decoration: line-through;
+            font-size: 10px;
+            color: rgb(147, 153, 159);
+          }
+        }
+      }
+      .cartcontrol-wrapper {
+        position: absolute;
+        right: 18px;
+        bottom: 18px;
+      }
+      .buy {
+        position: absolute;
+        right: 18px;
+        bottom: 18px;
+        z-index: 10;
+        width: 74px;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+        box-sizing: border-box;
+        border-radius: 12px;
+        background: rgb(0, 160, 220);
+        font-size: 10px;
+        color: #fff;
+      }
+      .buy-hide-enter-active, .buy-hide-leave-active {
+        transition: all 0.3s;
+      }
+      .buy-hide-enter, .buy-hide-leave-to {
+        opacity: 0;
       }
     }
   }
