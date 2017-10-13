@@ -83,10 +83,12 @@
       show () {
         this.showFlag = true
         this.selectType = ALL
-        this.onlyContent = true
+        this.onlyContent = false
         this.$nextTick(() => {
           if (!this.foodScroll) {
-            this.foodScroll = new BScroll(this.$refs.food, {})
+            this.foodScroll = new BScroll(this.$refs.food, {
+              click: true
+            })
           } else {
             this.foodScroll.refresh()
           }
