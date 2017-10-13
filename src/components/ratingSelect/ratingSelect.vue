@@ -52,12 +52,12 @@
     },
     methods: {
       select (type, event) {
-        console.log(111)
-        this.selectType = type
+//        this.selectType = type
         this.$emit('select', type)
       },
       toggleContent () {
-        this.onlyContent = !this.onlyContent
+//        this.onlyContent = !this.onlyContent
+        this.$emit('toggle')
       }
     },
     computed: {
@@ -84,7 +84,7 @@
       padding: 18px 0;
       margin: 0 18px;
       font-size: 0;
-      @include border-1px(rgba(7, 17, 27, 0.1))
+      @include border-1px(rgba(7, 17, 27, 0.1));
       .block {
         display: inline-block;
         padding: 8px 12px;
