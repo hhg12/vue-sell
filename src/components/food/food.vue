@@ -67,7 +67,7 @@
   import cartcontrol from '../cartcontrol/cartcontrol.vue'
   import split from '../split/split.vue'
   import ratingSelect from '../ratingSelect/ratingSelect.vue'
-  import {formatDate} from '../../common/js/date.js'
+  import { formatDate } from '../../common/js/date.js'
 
   const POSITIVE = 0
   const NEGATIVE = 1
@@ -97,9 +97,15 @@
     methods: {
       selected (type) {
         this.selectType = type
+        this.$nextTick(() => {
+          this.foodScroll.refresh()
+        })
       },
       toggleContent () {
         this.onlyContent = !this.onlyContent
+        this.$nextTick(() => {
+          this.foodScroll.refresh()
+        })
       },
       needShow (type, text) {
         if (this.onlyContent && !text) {

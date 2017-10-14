@@ -32,7 +32,7 @@
         while (arr.length < length) {
           arr.push(CLS_OFF)
         }
-        console.log(arr)
+//        console.log(arr)
         return arr
       }
     }
