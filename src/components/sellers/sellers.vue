@@ -1,5 +1,5 @@
 <template>
-  <div class="sellers">
+  <div class="sellers" ref="sellers">
     <div class="seller-content">
       <div class="overview">
         <h1 class="title">{{seller.name}}</h1>
@@ -30,8 +30,18 @@
         </ul>
       </div>
       <split></split>
+      <div class="bulletin">
+        <h1 class="title">公告与活动</h1>
+        <p class="content border-1px">{{seller.bulletin}}</p>
+        <ul class="supports">
+          <li class="support border-1px" v-for="item in seller.supports">
+            <span class="brand" :class="classMap[item.type]"></span>
+            <span class="text">{{item.description}}</span>
+          </li>
+        </ul>
+      </div>
+      <split></split>
     </div>
-
   </div>
 
 </template>
@@ -39,15 +49,27 @@
 <script>
   import star from '../star/star.vue'
   import split from '../split/split.vue'
+  import BScroll from 'better-scroll'
 
   export default {
+    created () {
+      this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        // 代码保证 this.$el 在 document 中
+        this.scroll = new BScroll(this.$refs.sellers, {
+          click: true
+        })
+      })
+    },
     props: {
       seller: {
         type: Object
       }
     },
     components: {
-      star,split
+      star, split
     }
   }
 </script>
@@ -73,14 +95,14 @@
       }
       .desc {
         display: flex;
-        padding-bottom: 12px;
-        line-height: 18px;
+        padding-bottom: 18px;
         @include border-1px(rgba(7, 17, 27, 0.2));
         .star {
           margin-right: 8px;
         }
         .text {
           margin-right: 12px;
+          line-height: 18px;
           font-size: 10px;
           color: rgb(77, 85, 93);
         }
@@ -109,6 +131,59 @@
               font-size: 24px;
             }
           }
+        }
+      }
+    }
+    .bulletin {
+      padding: 0 18px;
+      .title {
+        margin-bottom: 8px;
+        padding-top: 18px;
+        line-height: 14px;
+        font-size: 14px;
+        color: rgb(7, 17, 27)
+      }
+      .content {
+        padding: 0 12px 16px;
+        line-height: 24px;
+        font-size: 12px;
+        color: rgb(240, 20, 20);
+        @include border-1px(rgba(7, 17, 27, 0.1));
+      }
+      .support {
+        display: flex;
+        padding: 16px 12px;
+        @include border-1px(rgba(7, 17, 27, 0.1));
+        &:last-child {
+          @include border-none()
+        }
+        .brand {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          margin-right: 6px;
+          background-size: 16px 16px;
+          background-repeat: no-repeat;
+          &.decrease {
+            @include bg-img('decrease_3');
+          }
+          &.discount {
+            @include bg-img('discount_3');
+          }
+          &.invoice {
+            @include bg-img('invoice_3');
+          }
+          &.guarantee {
+            @include bg-img('guarantee_3');
+          }
+          &.special {
+            @include bg-img('special_3');
+          }
+        }
+        .text {
+          line-height: 16px;
+          font-size: 12px;
+          color: rgb(7, 17, 27);
         }
       }
     }
