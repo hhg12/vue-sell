@@ -58,9 +58,7 @@
     mounted: function () {
       this.$nextTick(function () {
         // 代码保证 this.$el 在 document 中
-        this.scroll = new BScroll(this.$refs.sellers, {
-          click: true
-        })
+        this._initScroll()
       })
     },
     props: {
@@ -70,7 +68,19 @@
     },
     components: {
       star, split
+    },
+    methods: {
+      _initScroll () {
+        if (!this.scroll) {
+          this.scroll = new BScroll(this.$refs.sellers, {
+            click: true
+          })
+        } else {
+          this.scroll.refresh()
+        }
+      }
     }
+
   }
 </script>
 
