@@ -41,6 +41,23 @@
         </ul>
       </div>
       <split></split>
+      <div class="pics">
+        <h1 class="title">商家实景</h1>
+        <div class="pic-wrapper">
+          <ul class="pic-list">
+            <li class="pic-item" v-for="pic in seller.pics">
+              <img :src="pic" width="120" height="90">
+            </li>
+          </ul>
+        </div>
+      </div>
+      <split></split>
+      <div class="info">
+        <h1 class="title border-1px">商家信息</h1>
+        <ul>
+          <li class="info-item" v-for="info in seller.infos">{{info}}</li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -78,6 +95,11 @@
         } else {
           this.scroll.refresh()
         }
+      },
+      _picScroll () {
+//        if (!this.picScroll) {
+//          this.picScroll = new BScroll(this.)
+//        }
       }
     }
 
@@ -194,6 +216,48 @@
           line-height: 16px;
           font-size: 12px;
           color: rgb(7, 17, 27);
+        }
+      }
+    }
+    .pics {
+      padding: 18px;
+      .title {
+        margin-bottom: 12px;
+        line-height: 14px;
+        font-size: 14px;
+        color: rgb(7, 17, 27)
+      }
+      .pic-wrapper {
+        width: 100%;
+        overflow: hidden;
+        .pic-list {
+          display: flex;
+          .pic-item {
+            margin-right: 6px;
+            &:last-child {
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+    .info {
+      padding: 18px 18px 0 18px;
+      .title {
+        padding-bottom: 12px;
+        line-height: 14px;
+        @include border-1px(rgba(7, 17, 27, .1));
+        font-size: 14px;
+        color: rgb(7, 17, 27)
+      }
+      .info-item {
+        padding: 16px 12px;
+        line-height: 16px;
+        @include border-1px(rgba(7, 17, 27, .1));
+        font-size: 12px;
+        color: rgb(7, 17, 27);
+        &:last-child {
+          @include border-none();
         }
       }
     }
