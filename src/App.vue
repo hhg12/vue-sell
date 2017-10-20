@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <v-header :seller = "seller"></v-header>
+    <v-header :seller="seller"></v-header>
     <div class="tab border-1px">
       <div class="tab-item">
         <router-link to="/goods">商品</router-link>
@@ -12,7 +12,9 @@
         <router-link to="/sellers">商家</router-link>
       </div>
     </div>
-    <router-view :seller = "seller"></router-view>
+    <keep-alive>
+      <router-view :seller="seller" ></router-view>
+    </keep-alive>
 
   </div>
 
@@ -20,6 +22,7 @@
 
 <script>
   import header from './components/header/header.vue'
+  import { urlParse } from './common/js/util.js'
 
   const ERR_OK = 0
 
@@ -30,15 +33,19 @@
     },
     data () {
       return {
-        seller: {}
+        seller: {
+          id: (() => {
+            let queryParam = urlParse()
+            return queryParam.id
+          })()
+        }
       }
     },
     created () {
       this.$http.get('/api/seller').then((res) => {
         res = res.body
         if (res.errno === ERR_OK) {
-          this.seller = res.data
-          console.log(res.data)
+          this.seller = Object.assign({}, this.seller, res.data)
         }
       })
     }

@@ -28,6 +28,10 @@
             </div>
           </li>
         </ul>
+        <div class="favorite" @click="toggleFavorite">
+          <span class="icon-ShapeCopy iconfont" :class="{active:favorite}"></span>
+          <span class="text">{{favoriteText}}</span>
+        </div>
       </div>
       <split></split>
       <div class="bulletin">
@@ -67,6 +71,7 @@
   import star from '../star/star.vue'
   import split from '../split/split.vue'
   import BScroll from 'better-scroll'
+  import { storeToLocal, loadFromLocal } from '../../common/js/store'
 
   export default {
     created () {
@@ -83,10 +88,24 @@
         type: Object
       }
     },
+    data () {
+      return {
+        favorite: loadFromLocal(this.seller.id, 'favorite', false)
+      }
+    },
+    computed: {
+      favoriteText () {
+        return this.favorite ? '已收藏' : '收藏'
+      }
+    },
     components: {
       star, split
     },
     methods: {
+      toggleFavorite () {
+        this.favorite = !this.favorite
+        storeToLocal(this.seller.id, 'favorite', this.favorite)
+      },
       _initScroll () {
         if (!this.scroll) {
           this.scroll = new BScroll(this.$refs.sellers, {
@@ -113,7 +132,7 @@
   .sellers {
     position: absolute;
     top: 174px;
-    bottom: 68px;
+    bottom: 0;
     width: 100%;
     overflow: hidden;
     .overview {
@@ -163,6 +182,28 @@
               font-size: 24px;
             }
           }
+        }
+      }
+      .favorite {
+        position: absolute;
+        width: 36px;
+        top: 18px;
+        right: 18px;
+        text-align: center;
+        .icon-ShapeCopy {
+          display: block;
+          margin-bottom: 4px;
+          line-height: 24px;
+          font-size: 24px;
+          color: #ccc;
+          &.active {
+            color: rgb(240, 20, 20);
+          }
+        }
+        .text {
+          line-height: 10px;
+          font-size: 10px;
+          color: rgb(77, 85, 93);
         }
       }
     }
