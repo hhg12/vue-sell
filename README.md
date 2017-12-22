@@ -19,3 +19,11 @@ npm run build --report
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+##demo
+
+![](https://hhg12.github.io/vue-sell/1.png)
+
+![](https://hhg12.github.io/vue-sell/2.png)
+
+![](https://hhg12.github.io/vue-sell/3.png)
